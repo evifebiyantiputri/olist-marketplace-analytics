@@ -12,7 +12,7 @@ What can an analysis of delivery performance across different operational dimens
 ## **1.3. Research Questions**
 This project addresses the main business question through five research questions:
 1. How does the Olist Marketplace perform in terms of delivery reliability and timeliness?
-2. How does delivery performance relate to customer satisfaction?
+2. How does delivery performance relate to customer satisfaction in the Olist Marketplace?
 3. How does delivery performance vary across different product categories?
 4. How does delivery performance vary across different sellers?
 5. How does delivery performance vary across different customer locations?
@@ -27,14 +27,47 @@ Olist Marketplace across different operational dimensions and understand its rel
 
 # **2. Dataset & Scope**
 ## **2.1. Dataset Sources**
+This project uses the Brazilian E-Commerce Public Dataset by Olist, sourced from Kaggle which consists of multiple relational tables covering different aspects of marketplace operations, including orders, customers, sellers, products, order items, payments, reviews, and geolocation data.These datasets are used to evaluate delivery performance across various operational perspectives and explore its relationship with customer satisfaction.
+
 ## **2.2. Dataset Description**
+
+The dataset consists of nine CSV files from the Olist Marketplace. These files are stored in a single SQLite database and organized into relational tables.
+
+The database includes the following tables:
+
+| Table | Description |
+|---|---|
+| `olist_customers_dataset` | Contains customer information, including customer IDs, unique customer IDs, ZIP code prefixes, cities, and states. |
+| `olist_geolocation_dataset` | Contains geographic information associated with ZIP code prefixes, including latitude, longitude, city, and state. |
+| `olist_order_items_dataset` | Contains information about individual items within each order, including oder IDs, order item IDs, product IDs, seller IDs, shipping limit dates, prices, and freight values. |
+| `olist_order_payments_dataset` | Contains payment information for each order, including order IDs, payment sequentials, payment types, installment counts, and payment values. |
+| `olist_orders_dataset` | Contains order-level information, including order IDs, customer IDs, order status, purchase timestamps, approval timestamps, delivery timestamps, actual delivery dates, and estimated delivery dates. |
+| `olist_products_dataset` | Contains product-level information, including product IDs, product categories, product dimensions, and weight. |
+| `olist_sellers_dataset` | Contains seller information, including seller IDs, ZIP code prefixes, cities, and states. |
+| `product_category_name_translation` | Provides English translations of product category names originally recorded in Portuguese. |
+
+Different combinations of tables are selected depending on the requirements of each research question. This allows the analysis to focus on specific aspects of marketplace operations without requiring all tables to be used in every analysis. 
+
+Data quality checks were also performed to identify potential issues that could affect the reliability of the analysis. The specific preparation steps and quality checks applied to each research question are described in their respective sections.
+
 ## **2.3. Overall Project Scope**
+This project focuses on evaluating delivery performance in the Olist Marketplace across five different operational dimensions:
+
+1. **Overall Delivery Performance:** Evaluating delivery reliability and timeliness by examining on-time and late deliveries.
+2. **Customer Satisfaction:** Investigates the relationship between delivery performance and customer review scores.
+3. **Product Categories:** Analyzing variations in delivery performance across different product categories.
+4. **Seller Performance:** Analyzing delivery performance across sellers to identify differences in delivery reliability.
+5. **Customer Locations:** Analyzing geographic variations in delivery performance across customer locations.
+
 ## **2.4. Analysis Period**
+Based on the available order data in the Olist dataset, this project analysis covers e-commerce transactions recorded between **September 2016 and August 2018**. This period provides the historical context for examining delivery performance across different operational dimensions. The specific time range used in each research question may vary depending on data availability and the inclusion criteria applied to the analysis.
 
 # **3. Methodology**
 ## **3.1. Tools Used**
+The following software were used throughout this porject: SQLite, Visual Studio Code, Jupyter Notebook, Git, and GitHub.
+
 ## **3.2. Data Preparation & Quality Assessment**
-## **3.3. Analytical Approach**
+To ensure data integrity, relevant datasets were prepared to ensure they were suitable for each research question. The preparation process included selecting relevant tables, joining datasets where necessary, filtering records based on the analysis requirements, and handling missing or inconsistent values. The specific preparation steps and quality checks applied to each research question are detailed in their respective sections.
 
 # **4. Research Questions & Analysis**
 ## **4.1. RQ1 - Delivery Performance Analysis**
@@ -42,49 +75,23 @@ Olist Marketplace across different operational dimensions and understand its rel
 #### **A. Business Question**
 How well is Olist Marketplace performing in terms of delivery?
 
-To address this question, the analysis examines three aspects of delivery performance:
-1. The proportion of orders delivered on time versus late.
-2. The distribution and duration of late deliveries.
-3. Changes in delivery performance over time.
-
 #### **B. Objectives**
 The objectives of this analysis are to:
-1. Evaluate delivery reliability by measuring the proportion of on-time and late deliveries.
-2. Examine the distribution of delivery delays to understand how severe late deliveries are.
+1. Evaluate delivery performance based on on-time and late deliveries.
+2. Examine the distribution of delivery delays to understand the severity late deliveries.
 3. Examine monthly delivery performance by tracking changes in both the number and proportion of late deliveries over time.
+
 ### **4.1.2. Metrics & Definitions**
 This analysis uses several metrics to evaluate delivery performance and examine delivery delays.
-#### **A. Delivery Status**
-Orders are classified into two categories based on the comparison between the actual delivery date and the estimated delivery date:
 
-**- On Time:** Orders delivered on or before the estimated delivery date.
-
-**- Late:** Orders delivered after the estimated delivery date.
-
-#### **B. On-time Delivery Rate**
-The proportion of eligible orders delivered on or before the estimated delivery date, calculated as:
-
-On-time Delivery Rate = (On-time Orders/Eligible Orders) x 100%
-
-#### **C. Late Delivery Rate**
-The proportion of eligible orders delivered after the estimated delivery date, calculated as:
-
-Late Delivery Rate = (Late Orders/Eligible Orders) x 100%
-
-#### **D. Late Delivery Duration**
-The number of days an order is delayed beyond its estimated delivery date, calculated as:
-
-Delay Days = Actual Delivery Date - Estimated Delivery Date
-
-Only order with a positive delay duration are included in the late delivery duration analysis.
-
-#### **E. Monthly Late Delivery Frequency**
-The number of late orders grouped by their purchase month, using the order purchase timestamp as the reference.
-
-#### **F. Monthly Late Delivery Rate**
-The proportion of late orders relative to all eligible orders within the same purchase month, calculated as:
-
-Monthly Late Delivery Rate = (Monthly Late Orders/Monthly Eligible Orders) x 100%
+|  **Metric** | **Definition** |
+| --- | --- |
+| **Delivery Status**| Orders are classified into two categories based on the comparison between the actual delivery date and the estimated delivery date: <br>**- On Time:** Orders delivered on or before the estimated delivery date.<br>**- Late:** Orders delivered after the estimated delivery date. |
+| **On-time Delivery Rate** | The proportion of eligible orders delivered on or before the estimated delivery date, calculated as:<br><br>On-time Delivery Rate = (On-time Orders/Eligible Orders) x 100% |
+| **Late Delivery Rate** | The proportion of eligible orders delivered after the estimated delivery date, calculated as: <br><br>Late Delivery Rate = (Late Orders/Eligible Orders) x 100% |
+| **Late Delivery Duration** | The number of days an order is delayed beyond its estimated delivery date, calculated as: <br><br>Delay Days = Actual Delivery Date - Estimated Delivery Date <br><br>Only order with a positive delay duration are included in the late delivery duration analysis. |
+| **Monthly Late Delivery Frequency** | The number of late orders grouped by their purchase month, using the order purchase timestamp as the reference.|
+| **Monthly Late Delivery Rate** | The proportion of late orders relative to all eligible orders within the same purchase month, calculated as: <br><br>Monthly Late Delivery Rate = (Monthly Late Orders/Monthly Eligible Orders) x 100% |
 
 ### **4.1.3. Data Preparation & Quality Assessment**
 #### **A. Duplicate Check**
@@ -220,8 +227,26 @@ Evaluations of monthly delivery performance should consistently feature both tot
 
 ## **4.2. RQ2 - Delivery Performance & Customer Satisfaction**
 ### **4.2.1. Business Question & Objectives**
+#### **A. Business Question**
+How does delivery performance relate to customer satisfaction in the Olist Marketplace?
+#### **B. Objectives**
+1. Compare average customer review scores between on-time and late deliveries.
+2. Analyze and compare the distribution of customer review scores across on-time and late deliveries.
+3. Evaluate the association between delivery performance and customer satisfaction using statistical testing.
+
 ### **4.2.2. Metrics & Definitions**
+|  **Metric** | **Definition** |
+| --- | --- |
+| **Delivery Status**| Orders are classified into two categories based on the comparison between the actual delivery date and the estimated delivery date: <br>**- On Time:** Orders delivered on or before the estimated delivery date.<br>**- Late:** Orders delivered after the estimated delivery date. |
+| **Average Review Score** | The average customer review score for each delivery group, measured on a scale of 1 to 5. |
+| **Review Score Distribution** | The number and proportion of orders receiving each review score (1–5) within each delivery group.|
+
 ### **4.2.3. Data Preparation & Quality Assessment**
+1. data selection & joining
+2. delivery status classification
+3. missing value assessment
+4. duplicate assessment
+5. final dataset validation
 ### **4.2.4. Analysis & Findings**
 ### **4.2.5. Business Insights & Recommendations**
 
